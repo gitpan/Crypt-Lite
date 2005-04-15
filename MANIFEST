@@ -1,0 +1,9 @@
+Changes
+Lite.xs
+Makefile.PL
+MANIFEST
+ppport.h
+README
+t/Crypt.t
+lib/Crypt/Lite.pm
+META.yml                                 Module meta-data (added by MakeMaker)
