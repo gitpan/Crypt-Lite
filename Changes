@@ -5,3 +5,8 @@ Revision history for Perl extension Crypt::Lite.
 
 0.82.05  Wed Apr 14 00:58:00 2005
 	- Updated comment
+
+0.82.06  Thu Sep 29 10:33:00 2005
+	- A comment has shown it needs at least version 5.6.1
+	  of Perl and the Makefile.PL has been updated
+	  accordingly

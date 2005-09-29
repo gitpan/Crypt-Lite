@@ -1,16 +1,19 @@
 Crypt::Lite version 0.82.0x
 ===========================
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+Sometimes it's necessary to protect some certain data against plain reading
+or you intend to send information through the Internet. Another reason might
+be to assure users cannot modify their previously entered data in a follow-up
+step of a long Web transaction where you don't want to deal with server-side
+session data. The goal of Crypt::Lite was to have a pretty simple way to
+encrypt and decrypt data without the need to install and compile huge
+packages with lots of dependencies.
 
-A README file is required for CPAN modules since CPAN extracts the
-README file from a module distribution so that people browsing the
-archive can use it get an idea of the modules uses. It is usually a
-good idea to provide version information here so that people can
-decide whether fixes for the module are worth downloading.
+Crypt::Lite generates every time a different encrypted hash when you
+re-encrypt the same data with the same secret string. Nevertheless you
+are able to make double or tripple-encryption with any data to increase
+the security. Decryption works also on hashes that have been encrypted
+on a foreign host (try this with an unpatched IDEA installation ;-).
 
 INSTALLATION
 
@@ -25,7 +28,7 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  none
+  none :-)
 
 COPYRIGHT AND LICENCE
 

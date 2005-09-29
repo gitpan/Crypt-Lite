@@ -1,4 +1,5 @@
-use 5.008003;
+use 5.6.1;
+#use 5.008003;
 use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
