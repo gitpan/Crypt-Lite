@@ -20,7 +20,7 @@ my $package = __PACKAGE__;
 require MIME::Base64;
 use MD5;
 
-our $VERSION = '0.82.07';
+our $VERSION = '0.82.08';
 
 # GLOBAL VARIABLES
 my $contentType = "";
