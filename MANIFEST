@@ -4,6 +4,7 @@ Makefile.PL
 MANIFEST
 ppport.h
 README
-t/Crypt.t
+t/Crypt_common.t
+t/Crypt_special.t
 lib/Crypt/Lite.pm
 META.yml                                 Module meta-data (added by MakeMaker)

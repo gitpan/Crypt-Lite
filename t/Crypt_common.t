@@ -5,7 +5,8 @@
 
 # change 'tests => 1' to 'tests => last_test_to_print';
 
-use Test::More tests => 2;
+use Test::More tests => 3;
+
 BEGIN { use_ok('Crypt::Lite') };
 
 #########################
@@ -16,8 +17,11 @@ BEGIN { use_ok('Crypt::Lite') };
 my $c = Crypt::Lite->new(debug => 0, encoding => 'hex8');
 
 my $enc = $c->encrypt('plain text to encrypt', 'mysecret');
-
 my $dec = $c->decrypt($enc, 'mysecret');
-
 ok($dec eq 'plain text to encrypt', 'Encryption / Decryption');
+
+
+$dec = $c->decrypt($enc, 'wrongpassword');
+ok($dec eq '', 'Double check');
+
 

@@ -12,7 +12,7 @@ WriteMakefile(
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       # XX (ABSTRACT_FROM  => 'lib/Crypt.pm', # retrieve abstract from module
       (ABSTRACT_FROM  => 'lib/Crypt/Lite.pm', # retrieve abstract from module
-       AUTHOR         => 'Reto Hersiczky <retoh@cpan.org>') : ()),
+       AUTHOR         => 'Reto Schaer <retoh@cpan.org>') : ()),
     LIBS              => [''], # e.g., '-lm'
     DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
     INC               => '-I.', # e.g., '-I. -I/usr/include/other'

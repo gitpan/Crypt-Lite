@@ -1,7 +1,7 @@
 package Crypt::Lite;
 use strict;
 ############################################################
-# Author  :  Reto.Hersiczky@infocopter.com
+# Author  :  retoh@cpan.org
 # Created :  07FEB2002
 #
 # Licencing:
@@ -18,8 +18,9 @@ use strict;
 
 my $package = __PACKAGE__;
 require MIME::Base64;
+use MD5;
 
-our $VERSION = '0.82.06';
+our $VERSION = '0.82.07';
 
 # GLOBAL VARIABLES
 my $contentType = "";
@@ -56,20 +57,15 @@ sub encrypt {
 	
 	# Make sure to encrypt similar or equal text to different strings
 	my $scramble_left  = sprintf("%04d", substr(1048576 * rand(), 0, 4));
-	my $scramble_right = sprintf("%04d", substr(1048576 * rand(), 0, 4));
 
-	my $text_scrambled = "$scramble_left\t$text\t$priv\t$scramble_right";
+	my $priv_md5 = MD5->hexhash($priv);
+
+	my $text_scrambled = "$scramble_left\t$text\t$priv_md5";
 
 	my $bin_text = &atob($text_scrambled);
 	my $bin_priv = &atob($priv);
 
 	Debug "N1000: Scrambling '$text' with '$priv'...";
-	
-	#####  Make test
-	# my $check1 = '1010';
-	# my $check2 = '0111';
-	# my $check = &bin_add($check1, $check2);
-	# Debug "BEGIN TEST"; Debug $check1; Debug $check2; Debug $check; Debug "END TEST";
 	
 	my $encryp = &bin_add($bin_text, $bin_priv);
 	
@@ -80,7 +76,6 @@ sub encrypt {
 	}
 	
 	my $encryp_pack = "";
-
 	for (my $i = 0; $i < length($encryp); $i += 8) {
 		my $elem = substr($encryp, $i, 8);
 		# X my $elemp =  pack('C', $elem); # cannot be used on RH8.0
@@ -90,7 +85,6 @@ sub encrypt {
 	Debug "N1003: encryp_pack -----> '$encryp_pack'\n";
 
 	my $encrypted = '';
-
 	if ($self->{'encoding'} eq 'hex8') {
 		$encrypted = iso2hex $encryp_pack;
 	}
@@ -114,14 +108,11 @@ sub decrypt {
 	my $bin_priv = &atob($priv);
 	
 	my $base64toplain = '';
-
 	if ($self->{'encoding'} eq 'hex8') {
 		$base64toplain = hex2iso $encryp_base64;
 		Debug "hex8 -> '$encryp_base64' = '$base64toplain'" if $self->{'debug'};
 	}
-	else {
-		$base64toplain = MIME::Base64::decode($encryp_base64);
-	}
+	else { $base64toplain = MIME::Base64::decode($encryp_base64); }
 
 	Debug "N1004: -> base64toplain = '$base64toplain'...";
 
@@ -129,7 +120,6 @@ sub decrypt {
 	for (my $i = 0; $i < length($base64toplain); $i++) {
 		my $elem = substr($base64toplain, $i, 1);
 		my $bin  = unpack('B8', $elem);
-
 		$encryp_pack .= $bin;
 	}
 
@@ -144,10 +134,13 @@ sub decrypt {
 
 	Debug "N1001: =====> '$encryp_pack' !!!";
 
-	my ($rand1, $result, $priv_wrapped, $rand2) = split /\t/, $encryp_pack;
+	my ($rand1, $result, $priv_wrapped) = split /\t/, $encryp_pack;
+
+	my $priv_md5 = MD5->hexhash($priv);
+
 	return '' if $rand1 =~ /\D/;
-	return '' if $rand2 =~ /\D/;
-	return '' unless $priv eq $priv_wrapped;
+	return '' unless ($priv_md5 eq $priv_wrapped or $priv eq $priv_wrapped);
+	# -- Additional clause "$priv eq $priv_wrapped" for reasons of reverse compatibilty before rel. 0.82.07
 
 	$result; # return middle element of array only
 }
@@ -241,9 +234,25 @@ Returns an empty string if the encrypted hash has been broken
 
 =head1 DESCRIPTION
 
+=head2 Important Notice
+
+Crypt::Lite does C<NOT> strong encryption - that's what the "Lite" stands for. It's very easy to install and use, anwhere where Perl runs. Please take a closer look on AES or Blowfish for strong encryption.
+
+=head2 What's Special
+
+Crypt::Lite returns an empty string if the passphrase does not exactly match. Especially block ciphers often return a partial plain text even if, let's say about 90 % of the passphrase was correct (this will not say it's more secure - it's a property ;-).
+
+=head2 Introduction
+
 Sometimes it's necessary to protect some certain data against plain reading or you intend to send information through the Internet. Another reason might be to assure users cannot modify their previously entered data in a follow-up step of a long Web transaction where you don't want to deal with server-side session data. The goal of Crypt::Lite was to have a pretty simple way to encrypt and decrypt data without the need to install and compile huge packages with lots of dependencies.
 
-Crypt::Lite generates every time a different encrypted hash when you re-encrypt the same data with the same secret string. Nevertheless you are able to make double or tripple-encryption with any data to increase the security. Decryption works also on hashes that have been encrypted on a foreign host (try this with an unpatched IDEA installation ;-). 
+Crypt::Lite has the property that it typically returns an empty string on a wrong passphrase instead of a partially decrpyted string. It generates every time a different encrypted hash when you re-encrypt the same data with the same secret string. In normal cases of XOR encryption, what Crypt::Lite is based on, double or tripple encryption does NOT increase the security. Because of the nature of Crypt::Lite I state (because of the shifting concept) double encryption *does* increase the challenge to decrypt it. Nevertheless I *don't* recommend it because at least it creates very large strings ;-) What I really suggest is to use good passphrases not shorter than 6 characters, or better 16 characters length to encrypt. A randomly generated passphrase that is used only once of the same length as the plain text will be the most secure encryption with Crypt::Lite.
+
+In general, decryption works also on hashes that have been encrypted on a foreign host (try this with an unpatched IDEA installation ;-). 
+
+Since last time has grown a harshly thread about XOR encryption I suggest to take a look from time to time on this URL to get the latest news and documentation on
+
+http://www.infocopter.com/perl/modules/crypt-lite.html
 
 =head2 EXPORT
 
@@ -261,11 +270,11 @@ There is currently no mailing list.
 
 =head1 AUTHOR
 
-Reto Hersiczky, E<lt>retoh@hatespam-infocopter.comE<gt>
+Reto Schaer, E<lt>retoh@hatespam-cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2002-2005 by Reto Hersiczky
+Copyright (C) 2002-2006 by Reto Schaer
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.3 or,
