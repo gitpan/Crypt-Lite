@@ -1,8 +1,6 @@
 Changes
-Lite.xs
 Makefile.PL
 MANIFEST
-ppport.h
 README
 t/Crypt_common.t
 t/Crypt_special.t

@@ -23,3 +23,5 @@ ok($c->decrypt($enc, 'b') eq 'a', 'Short text, short secret');
 
 $enc = $c->encrypt('abcdef', '!*()*!');
 ok($c->decrypt($enc, '!*()*!') eq 'abcdef', 'Using non alpha characters as passphrase');
+
+sleep 1;

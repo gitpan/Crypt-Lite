@@ -24,4 +24,4 @@ ok($dec eq 'plain text to encrypt', 'Encryption / Decryption');
 $dec = $c->decrypt($enc, 'wrongpassword');
 ok($dec eq '', 'Double check');
 
-
+sleep 1;
