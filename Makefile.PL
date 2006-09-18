@@ -8,7 +8,7 @@ WriteMakefile(
     NAME              => 'Crypt::Lite',
     # XX VERSION_FROM      => 'lib/Crypt.pm', # finds $VERSION
     VERSION_FROM      => 'lib/Crypt/Lite.pm', # finds $VERSION
-    PREREQ_PM         => { 'Digest::MD5' => 0 }, # e.g., Module::Name => 1.1
+    PREREQ_PM         => { 'Digest::MD5' => 0, 'MD5' => 0 }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       # XX (ABSTRACT_FROM  => 'lib/Crypt.pm', # retrieve abstract from module
       (ABSTRACT_FROM  => 'lib/Crypt/Lite.pm', # retrieve abstract from module

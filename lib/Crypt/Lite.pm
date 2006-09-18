@@ -18,9 +18,13 @@ use strict;
 
 my $package = __PACKAGE__;
 require MIME::Base64;
-use MD5;
+unless (eval "require MD5") {
+	print "No MD5 module.\n";
+	# skip remaining tests
+	exit;
+}
 
-our $VERSION = '0.82.09';
+our $VERSION = '0.82.10';
 
 # GLOBAL VARIABLES
 my $contentType = "";

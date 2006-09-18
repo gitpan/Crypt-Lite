@@ -1,6 +1,6 @@
 Revision history for Perl extension Crypt::Lite.
 
-0.82.09  16.09.2006 15:27
+0.82.10  16.09.2006 15:27
 
 	 - There was a severe security bug in the encryption procedure in all
 	   earlier releases. To include the private key was a bad idea.
