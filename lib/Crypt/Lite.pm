@@ -24,7 +24,7 @@ unless (eval "require MD5") {
 	exit;
 }
 
-our $VERSION = '0.82.10';
+our $VERSION = '0.82.11';
 
 # GLOBAL VARIABLES
 my $contentType = "";

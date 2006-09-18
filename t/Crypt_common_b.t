@@ -5,9 +5,11 @@
 
 # change 'tests => 1' to 'tests => last_test_to_print';
 
-use Test::More tests => 2;
+use Test::More tests => 3;
+# XXX use Test::More tests => 2;
 
-#BEGIN { u s e _ o k ('Crypt::Lite') };
+# XXX #BEGIN { u s e _ o k ('Crypt::Lite') };
+BEGIN { use_ok('Crypt::Lite') };
 
 #########################
 
